@@ -1,18 +1,24 @@
-package com.example.formregister
+package com.example.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.formregister.databinding.ActivityRegisterBinding
+import com.example.activity.databinding.FormregisterBinding
+import com.example.activity.ui.login.LoginActivity
 
 class RegisterActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityRegisterBinding
+
+    private lateinit var binding: FormregisterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityRegisterBinding.inflate(layoutInflater)
+
+        // Inisialisasi binding
+        binding = FormregisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Klik Register
         binding.btnRegister.setOnClickListener {
             val fullName = binding.etFullName.text.toString().trim()
             val username = binding.etUsername.text.toString().trim()
@@ -29,10 +35,8 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Data valid
             Toast.makeText(this, "Registrasi Berhasil!", Toast.LENGTH_SHORT).show()
 
-            // Simpan ke SharedPreferences (opsional)
             val sharedPref = getSharedPreferences("userData", MODE_PRIVATE)
             with(sharedPref.edit()) {
                 putString("fullName", fullName)
@@ -40,6 +44,10 @@ class RegisterActivity : AppCompatActivity() {
                 putString("password", password)
                 apply()
             }
+
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 }
